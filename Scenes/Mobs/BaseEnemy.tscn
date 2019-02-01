@@ -1,0 +1,54 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scripts/Mobs/BaseEnemy.gd" type="Script" id=1]
+[ext_resource path="res://Sprites/Mobs/BaseEnemy/zombie.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/Mobs/BaseEnemy/zombie_n.png" type="Texture" id=3]
+
+[sub_resource type="CircleShape2D" id=1]
+
+custom_solver_bias = 0.0
+radius = 11.0
+
+[node name="BaseEnemy" type="KinematicBody2D" index="0"]
+
+input_pickable = false
+collision_layer = 1
+collision_mask = 1
+collision/safe_margin = 0.08
+script = ExtResource( 1 )
+_sections_unfolded = [ "Collision", "collision" ]
+
+[node name="Helper" type="Node2D" parent="." index="0"]
+
+[node name="Sprite" type="Sprite" parent="Helper" index="0"]
+
+texture = ExtResource( 2 )
+normal_map = ExtResource( 3 )
+offset = Vector2( 10, 1 )
+hframes = 2
+_sections_unfolded = [ "Animation", "Offset" ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
+
+shape = SubResource( 1 )
+
+[node name="PlayerCollider" type="Area2D" parent="." index="2"]
+
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+collision_layer = 0
+collision_mask = 2
+audio_bus_override = false
+audio_bus_name = "Master"
+_sections_unfolded = [ "Collision" ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerCollider" index="0"]
+
+shape = SubResource( 1 )
+
+[connection signal="body_entered" from="PlayerCollider" to="." method="_on_PlayerCollider_body_entered"]
+
+
