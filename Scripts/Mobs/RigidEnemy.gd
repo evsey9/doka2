@@ -1,10 +1,11 @@
-extends KinematicBody2D
+extends RigidBody2D
 
 # class member variables go here, for example:
 # var a = 2
 # var b = "textvar"
 var hp = 10000
 var speed = 150
+var movespeed =150
 var player
 var lastpos = Vector2()
 var pangle
@@ -32,7 +33,7 @@ func _physics_process(delta):
 	if len(get_tree().get_nodes_in_group("player")) > 0:
 		player = get_tree().get_nodes_in_group("player")[0]
 	if (position.distance_to(player.position) <= sniffrange or (position.distance_to(player.position) <= seerange and can_move(player.position, space_state))) and path == null: #$RayCast2D.is_colliding() and path == null:
-		
+
 		var body = player #$RayCast2D.get_collider()
 		if body.is_in_group("player"):
 			lastpos = body.position
@@ -49,7 +50,7 @@ func _physics_process(delta):
 			if len(path) > 0:
 				pathi = 0
 				for i in path:
-					i = to_global(i)
+					i = i
 				movepos = path[pathi]
 				print(path)
 		if path != null and len(path) > 0:
@@ -64,30 +65,36 @@ func _physics_process(delta):
 					path = null
 					pathi = 0
 				#	simple = 0
-				print("PATHI: ", pathi)
-	if movepos != null and position.distance_to(movepos) >= speed * delta:
+				#print("PATHI: ", pathi)
+	if movepos != null:# and position.distance_to(movepos) >= speed * delta:
 		#print("WALK")
 		#pangle = get_angle_to(lastpos)
-		
+
 		#move_and_slide(speed*(to_local(movepos)).normalized())
-		$Helper.rotation = to_local(movepos).angle()
-		collision = move_and_collide(speed*(to_local(movepos)).normalized()*delta)
-		
-		if collision != null:
-			var newvec = collision.remainder - Vector2(collision.remainder.x * collision.normal.x * -sign(collision.remainder.x), collision.remainder.y * collision.normal.y * -sign(collision.remainder.y))
-			#print(collision.remainder, " R")
-			#print(collision.normal, "N")
-			#print(newvec, "N")
-			#$Helper.rotation = to_local(movepos).angle()
-			move_and_collide(newvec.normalized()*speed*delta)
-		
+		#$Helper.rotation = to_local(movepos).angle()
+		if rotation < (player.position - self.position).angle():
+			applied_torque = 15000
+		else:
+			applied_torque = -15000
+		pass
+		#collision = move_and_collide(speed*(to_local(movepos)).normalized()*delta)
+		applied_force = movespeed*((movepos - position).normalized())
+		#print("FORCE: " + str(applied_force))
+		#if collision != null:
+		#	var newvec = collision.remainder - Vector2(collision.remainder.x * collision.normal.x * -sign(collision.remainder.x), collision.remainder.y * collision.normal.y * -sign(collision.remainder.y))
+		#	#print(collision.remainder, " R")
+		#	#print(collision.normal, "N")
+		#	#print(newvec, "N")
+		#	#$Helper.rotation = to_local(movepos).angle()
+		#	move_and_collide(newvec.normalized()*speed*delta)
+
 	#if get_slide_count() > 0:
 	#	collision = get_slide_collision(0)
 	#	if lastpos != null:
 	#		#path = $Navigation2D.get_simple_path(Vector2(),to_local(lastpos))
 	#		pass
 	update()
-	
+
 func take_damage(dmg):
 	hp -= dmg
 	if hp <= 0:
@@ -102,7 +109,8 @@ func can_move(pos, state):
 func die():
 	queue_free()
 func _on_PlayerCollider_body_entered(body):
-	get_tree().reload_current_scene()
+	if body.is_in_group("player"):
+		get_tree().reload_current_scene()
 
 
 func _draw():

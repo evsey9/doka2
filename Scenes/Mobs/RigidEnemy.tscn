@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Scripts/Mobs/BaseEnemy.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/Mobs/RigidEnemy.gd" type="Script" id=1]
 [ext_resource path="res://Sprites/Mobs/BaseEnemy/zombie.png" type="Texture" id=2]
 [ext_resource path="res://Sprites/Mobs/BaseEnemy/zombie_n.png" type="Texture" id=3]
 
@@ -9,14 +9,28 @@
 custom_solver_bias = 0.0
 radius = 11.0
 
-[node name="BaseEnemy" type="KinematicBody2D"]
+[node name="RigidEnemy" type="RigidBody2D" index="0"]
 
 input_pickable = false
 collision_layer = 1
 collision_mask = 1
-collision/safe_margin = 0.08
+mode = 0
+mass = 0.1
+friction = 1.0
+bounce = 0.0
+gravity_scale = 1.0
+custom_integrator = false
+continuous_cd = 0
+contacts_reported = 0
+contact_monitor = false
+sleeping = false
+can_sleep = true
+linear_velocity = Vector2( 0, 0 )
+linear_damp = 8.0
+angular_velocity = 0.0
+angular_damp = 8.0
 script = ExtResource( 1 )
-_sections_unfolded = [ "Collision", "collision" ]
+_sections_unfolded = [ "Angular", "Collision", "Linear", "collision" ]
 
 [node name="Helper" type="Node2D" parent="." index="0"]
 

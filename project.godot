@@ -58,6 +58,10 @@ player_shoot=[ Object(InputEventMouseButton,"resource_local_to_scene":false,"res
 2d_physics/layer_2="Player"
 2d_physics/layer_3="Bullet"
 
+[physics]
+
+2d/default_gravity_vector=Vector2( 0, 0 )
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"
