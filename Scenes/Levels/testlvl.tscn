@@ -20,7 +20,7 @@ _data = {
 "points": PoolVector2Array(  )
 }
 
-[node name="Testlvl" type="Node2D"]
+[node name="Testlvl" type="Node2D" index="0"]
 
 [node name="Navigation2D" type="Navigation2D" parent="." index="0"]
 
