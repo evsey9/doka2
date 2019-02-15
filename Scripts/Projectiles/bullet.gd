@@ -7,6 +7,8 @@ var collis
 var speed = 10
 var refchance = 10
 var refdegree = 15
+var mvector = Vector2()
+var pushforce = 5
 func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here
@@ -21,7 +23,7 @@ func _physics_process(delta):
 #	# Called every frame. Delta is time since last frame.
 #	# Update game logic here.
 #	pass
-	var mvector = speed*delta*Vector2(cos(rotation),sin(rotation))
+	mvector = speed*delta*Vector2(cos(rotation),sin(rotation))
 	collis = move_and_collide(mvector)
 	$Tracer.points = PoolVector2Array([Vector2(0,0),mvector.length()*0*Vector2(-1,0)])
 	if collis != null:
@@ -40,6 +42,8 @@ func _physics_process(delta):
 
 func _on_EnemyCollider_body_entered(body):
 	if body.is_in_group("enemy"):
+		if body.is_in_group("rigid"):
+			body.apply_impulse(position,mvector.normalized()*pushforce)
 		body.take_damage(25)
 	#queue_free()
 	destroy(5)

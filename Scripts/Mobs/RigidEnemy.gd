@@ -17,6 +17,7 @@ var sniffrange = 1280
 var seerange = sniffrange * 4
 var circmove = Curve2D.new()
 var simple = 0
+var rotspeed = 15000
 onready var r = $CollisionShape2D.shape.radius + 1
 var angle
 onready var nav = $"../Navigation2D"
@@ -24,6 +25,7 @@ func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here
 	add_to_group("enemy")
+	add_to_group("rigid")
 
 func _physics_process(delta):
 #	# Called every frame. Delta is time since last frame.
@@ -46,6 +48,7 @@ func _physics_process(delta):
 		pathi = 0
 	if movepos != null:
 		if !can_move(movepos, space_state) and path == null:
+		#if !phys_move(movepos) and path == null:
 			path = nav.get_simple_path(position,movepos,false)
 			if len(path) > 0:
 				pathi = 0
@@ -55,7 +58,7 @@ func _physics_process(delta):
 				print(path)
 		if path != null and len(path) > 0:
 			movepos = path[pathi]
-			if position.distance_to(movepos) <= speed*delta:
+			if position.distance_to(movepos) <= speed*delta * 3:
 				#if pathi > 0 + simple:
 				#	path = nav.get_simple_path(position,path[pathi],false)
 				#	pathi = 0
@@ -72,13 +75,15 @@ func _physics_process(delta):
 
 		#move_and_slide(speed*(to_local(movepos)).normalized())
 		#$Helper.rotation = to_local(movepos).angle()
-		if rotation < (player.position - self.position).angle():
-			applied_torque = 15000
+		#if rotation < (player.position - self.position).angle():
+		if get_angle_to(movepos) >= 0:
+			applied_torque = rotspeed
 		else:
-			applied_torque = -15000
+			applied_torque = -rotspeed
 		pass
 		#collision = move_and_collide(speed*(to_local(movepos)).normalized()*delta)
-		applied_force = movespeed*((movepos - position).normalized())
+		#applied_force = movespeed*((movepos - position).normalized())
+		applied_force = movespeed*((Vector2(cos(rotation),sin(rotation))).normalized())
 		#print("FORCE: " + str(applied_force))
 		#if collision != null:
 		#	var newvec = collision.remainder - Vector2(collision.remainder.x * collision.normal.x * -sign(collision.remainder.x), collision.remainder.y * collision.normal.y * -sign(collision.remainder.y))
@@ -103,8 +108,12 @@ func take_damage(dmg):
 func can_move(pos, state):
 	#return !test_move(transform,speed*(to_local(pos)).normalized())
 	#return ($RayCast2D.is_colliding() and $RayCast2D.get_collider().is_in_group("player"))
-	var rt = state.intersect_ray(position, pos,self.get_children()+[player]+get_tree().get_nodes_in_group("bullet"))
+	var rt = state.intersect_ray(position, pos,self.get_children()+[player]+get_tree().get_nodes_in_group("bullet")+get_tree().get_nodes_in_group("enemy"))
 	return rt.empty()
+
+func phys_move(pos):
+	return !test_motion(pos)
+
 
 func die():
 	queue_free()
@@ -117,5 +126,7 @@ func _draw():
 	# This draw a white circle with radius of 10px for each point in the path
 	if path != null:
 		for p in path:
-	        draw_circle(to_local(p), 10, Color(1, 1, 1))
-		draw_circle(to_local(movepos), 10, Color(1, 0, 0))
+	        pass
+			#draw_circle(to_local(p), 10, Color(1, 1, 1))
+		pass
+		#draw_circle(to_local(movepos), 10, Color(1, 0, 0))
