@@ -104,6 +104,10 @@ func take_damage(dmg):
 	hp -= dmg
 	if hp <= 0:
 		die()
+	#$Helper/Sprite.material.set_shader_param("is", true)
+	modulate.g = 0.0
+	modulate.b = 0.0
+	$attimer.start()
 
 func can_move(pos, state):
 	#return !test_move(transform,speed*(to_local(pos)).normalized())
@@ -130,3 +134,8 @@ func _draw():
 			#draw_circle(to_local(p), 10, Color(1, 1, 1))
 		pass
 		#draw_circle(to_local(movepos), 10, Color(1, 0, 0))
+
+func _on_attimer_timeout():
+	#$Helper/Sprite.material.set_shader_param("is", false)
+	modulate.g = 1.0
+	modulate.b = 1.0
