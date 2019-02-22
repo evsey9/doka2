@@ -29,4 +29,4 @@ func _on_SpawnTimer_timeout():
 	var object = object_instance.instance()
 	$PathFollow2D.offset = randi()
 	object.position = $PathFollow2D.position
-	spawntimer.
+	
