@@ -3,7 +3,7 @@ extends RigidBody2D
 # class member variables go here, for example:
 # var a = 2
 # var b = "textvar"
-var hp = 10000
+var hp = 100
 var speed = 150
 var movespeed =150
 var player

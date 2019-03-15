@@ -1,100 +1,50 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scripts/Player/player.gd" type="Script" id=1]
 [ext_resource path="res://Sprites/Player/Person.png" type="Texture" id=2]
 [ext_resource path="res://Sprites/Player/light.png" type="Texture" id=3]
-[ext_resource path="res://Scenes/Player/UI.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Sprites/Player/circlight.png" type="Texture" id=4]
+[ext_resource path="res://Scenes/Player/UI.tscn" type="PackedScene" id=5]
 
 [sub_resource type="CircleShape2D" id=1]
-
-custom_solver_bias = 0.0
 radius = 11.0
 
-[node name="Player" type="KinematicBody2D" index="0" groups=[
+[node name="Player" type="KinematicBody2D" groups=[
 "player",
 ]]
-
 z_index = 1
-input_pickable = false
 collision_layer = 2
 collision_mask = 2
-collision/safe_margin = 0.08
 script = ExtResource( 1 )
-_sections_unfolded = [ "Collision", "Transform", "Z Index" ]
 
-[node name="helper" type="Node2D" parent="." index="0"]
+[node name="helper" type="Node2D" parent="."]
 
-_sections_unfolded = [ "Transform" ]
-
-[node name="Sprite" type="Sprite" parent="helper" index="0"]
-
+[node name="Sprite" type="Sprite" parent="helper"]
 z_index = -1
 texture = ExtResource( 2 )
 offset = Vector2( 14, 1 )
 hframes = 2
-_sections_unfolded = [ "Animation", "Offset", "Transform", "Z Index" ]
 
-[node name="bulPos" type="Position2D" parent="helper" index="1"]
-
+[node name="bulPos" type="Position2D" parent="helper"]
 position = Vector2( 23, 4 )
-_sections_unfolded = [ "Transform" ]
 
-[node name="Light2D" type="Light2D" parent="helper" index="2"]
-
-enabled = true
-editor_only = false
+[node name="Light2D" type="Light2D" parent="helper"]
 texture = ExtResource( 3 )
 offset = Vector2( 256, 4 )
-texture_scale = 1.0
-color = Color( 1, 1, 1, 1 )
-energy = 1.0
-mode = 0
-range_height = 0.0
-range_z_min = -1024
-range_z_max = 1024
-range_layer_min = 0
-range_layer_max = 0
-range_item_cull_mask = 1
 shadow_enabled = true
 shadow_color = Color( 0, 0, 0, 1 )
-shadow_buffer_size = 2048
-shadow_gradient_length = 0.0
-shadow_filter = 0
-shadow_filter_smooth = 0.0
-shadow_item_cull_mask = 1
-_sections_unfolded = [ "Shadow" ]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
+[node name="Light2D2" type="Light2D" parent="helper"]
+texture = ExtResource( 4 )
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
-_sections_unfolded = [ "Transform", "Z Index" ]
 
-[node name="Camera2D" type="Camera2D" parent="." index="2"]
-
-anchor_mode = 1
-rotating = false
+[node name="Camera2D" type="Camera2D" parent="."]
 current = true
-zoom = Vector2( 1, 1 )
-limit_left = -10000000
-limit_top = -10000000
-limit_right = 10000000
-limit_bottom = 10000000
-limit_smoothed = false
 drag_margin_h_enabled = false
 drag_margin_v_enabled = false
 smoothing_enabled = true
-smoothing_speed = 5.0
-offset_v = 0.0
-offset_h = 0.0
-drag_margin_left = 0.2
-drag_margin_top = 0.2
-drag_margin_right = 0.2
-drag_margin_bottom = 0.2
-editor_draw_screen = true
-editor_draw_limits = false
-editor_draw_drag_margin = false
-_sections_unfolded = [ "Drag Margin", "Smoothing" ]
 
-[node name="UI" parent="Camera2D" index="0" instance=ExtResource( 4 )]
-
+[node name="UI" parent="Camera2D" instance=ExtResource( 5 )]
 
