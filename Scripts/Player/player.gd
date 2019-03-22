@@ -6,8 +6,8 @@ var down
 var left
 var right
 var sh
-var speed = 256
-var mousepos = Vector2()
+var speed : float = 256.0
+var mousepos : Vector2 = Vector2()
 const FLASHTIMER = 0.02
 var flashtimer = FLASHTIMER
 var flash = false
@@ -32,7 +32,7 @@ func _process(delta):
 	left = Input.is_action_pressed("player_left")
 	right = Input.is_action_pressed("player_right")
 	sh = Input.is_action_pressed("player_shoot")
-	var mv = Vector2(0,  0)
+	var mv : Vector2 = Vector2(0,  0)
 	mv += int(up)*Vector2(0, -1)
 	mv += int(down)*Vector2(0, 1)
 	mv += int(left)*Vector2(-1, 0)
