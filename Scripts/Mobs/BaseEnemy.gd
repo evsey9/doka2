@@ -3,22 +3,22 @@ extends KinematicBody2D
 # class member variables go here, for example:
 # var a = 2
 # var b = "textvar"
-var hp = 10000
-var speed = 150
-var player
+var hp : float = 10000.0
+var speed : float = 150.0
+var player : KinematicBody2D
 var lastpos = Vector2()
 var pangle
 var movepos = null
 var collision
 var path = null
 var pathi = 0
-var sniffrange = 1280
-var seerange = sniffrange * 4
+var sniffrange : int = 1280
+var seerange : int = sniffrange * 4
 var circmove = Curve2D.new()
 var simple = 0
 onready var r = $CollisionShape2D.shape.radius + 1
 var angle
-onready var nav = $"../Navigation2D"
+onready var nav : Navigation2D = $"../Navigation2D"
 func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here

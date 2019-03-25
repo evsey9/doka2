@@ -1,20 +1,29 @@
 extends RigidBody2D
-
-# class member variables go here, for example:
-# var a = 2
-# var b = "textvar"
+var expleffect = preload("res://Scenes/Effects/Explosion.tscn")
 var collis
 var speed = 10
 var refchance = 10
 var refdegree = 15
 var forcemult = 1
+var primetime = 1.2
+var blastpower = 1000000
+var blastdist = 150
+# Declare member variables here. Examples:
+# var a = 2
+# var b = "text"
+
+# Called when the node enters the scene tree for the first time.
+
+
 func _ready():
 	# Called when the node is added to the scene for the first time.
 	# Initialization here
 	add_to_group("rigid")
-	set_linear_velocity(Vector2(speed,0))
+	add_to_group("noblock")
+	add_to_group("grenade")
+	#set_linear_velocity(Vector2(speed,0))
 	randomize()
-
+	set_time(primetime)
 func _physis_process(delta):
 #	# Called every frame. Delta is time since last frame.
 #	# Update game logic here.
@@ -37,4 +46,24 @@ func _physis_process(delta):
 #			queue_free()
 
 func fire():
-	apply_central_impulse(Vector2(cos(rotation*speed*forcemult),sin(rotation*speed*forcemult)))
+	apply_central_impulse(Vector2(cos(rotation)*speed*forcemult,sin(rotation)*speed*forcemult))
+	
+func set_time(time : float):
+	$ExplosionTimer.start(time)
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+#func _process(delta):
+#	pass
+func explode(): #create actual explosion object to spawn
+	var nexp = expleffect.instance()
+	nexp.position = position
+	nexp.blastdist = blastdist
+	nexp.blastpower = blastpower
+	nexp.dmgmod = 0.05
+	get_parent().add_child(nexp)
+	queue_free()
+
+func _on_ExplosionTimer_timeout():
+	explode()
+	#finish up the code
+
+

@@ -1,15 +1,15 @@
 extends Node2D
 var gun_name = "AK-747"
-var projectile_type = "bullet"
-var fire_time = 0.1
+var projectile_type = "grenade"
+var fire_time : float = 0.1
 var bulletscene = load("res://Scenes/Projectiles/" + projectile_type + ".tscn")
-var bullet_speed = 1024
+var bullet_speed : int = 1024
 var spread_factor = 1
 var speed_rand = 50
 var held = false
 var canfire = true
-var bullet_amount = 1
-var weapontimer = Timer.new()
+var bullet_amount : int = 1
+var weapontimer : Timer = Timer.new()
 
 # class member variables go here, for example:
 # var a = 2
@@ -24,6 +24,7 @@ func _ready():
 	weapontimer.one_shot = true
 	weapontimer.process_mode = Timer.TIMER_PROCESS_PHYSICS
 	add_child(weapontimer)
+	$topsprite/gunname.text = gun_name
 #func _process(delta):
 #	# Called every frame. Delta is time since last frame.
 #	# Update game logic here.
@@ -38,6 +39,8 @@ func shoot(pos, rot, speed):
 			bullet.rotation = rot + deg2rad(rand_range(-spread_factor,spread_factor))
 			bullet.speed = speed + rand_range(-speed_rand,speed_rand)
 			$"../../".add_child(bullet)
+			if (bullet.is_in_group("rigid")):
+				bullet.fire()
 		canfire = false
 		weapontimer.start()
 

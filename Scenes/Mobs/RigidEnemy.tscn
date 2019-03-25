@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scripts/Mobs/RigidEnemy.gd" type="Script" id=1]
 [ext_resource path="res://Sprites/Mobs/BaseEnemy/zombie.png" type="Texture" id=2]
@@ -20,6 +20,9 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = SubResource( 1 )
+
+[sub_resource type="PhysicsMaterial" id=6]
+friction = 0.0
 
 [sub_resource type="Shader" id=3]
 code = "shader_type canvas_item;
@@ -47,7 +50,8 @@ radius = 11.0
 
 [node name="RigidEnemy" type="RigidBody2D"]
 material = SubResource( 2 )
-mass = 0.1
+mass = 20.0
+physics_material_override = SubResource( 6 )
 linear_damp = 8.0
 angular_damp = 8.0
 script = ExtResource( 1 )

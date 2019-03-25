@@ -26,6 +26,7 @@ func _ready():
 	# Initialization here
 	add_to_group("enemy")
 	add_to_group("rigid")
+	add_to_group("noblock")
 
 func _physics_process(delta):
 #	# Called every frame. Delta is time since last frame.
@@ -55,7 +56,7 @@ func _physics_process(delta):
 				for i in path:
 					i = i
 				movepos = path[pathi]
-				print(path)
+				#print(path)
 		if path != null and len(path) > 0:
 			movepos = path[pathi]
 			if position.distance_to(movepos) <= speed*delta * 3:
@@ -83,7 +84,7 @@ func _physics_process(delta):
 		pass
 		#collision = move_and_collide(speed*(to_local(movepos)).normalized()*delta)
 		#applied_force = movespeed*((movepos - position).normalized())
-		applied_force = movespeed*((Vector2(cos(rotation),sin(rotation))).normalized())
+		applied_force = movespeed*((Vector2(cos(rotation),sin(rotation))).normalized())*weight
 		#print("FORCE: " + str(applied_force))
 		#if collision != null:
 		#	var newvec = collision.remainder - Vector2(collision.remainder.x * collision.normal.x * -sign(collision.remainder.x), collision.remainder.y * collision.normal.y * -sign(collision.remainder.y))
@@ -112,7 +113,7 @@ func take_damage(dmg):
 func can_move(pos, state):
 	#return !test_move(transform,speed*(to_local(pos)).normalized())
 	#return ($RayCast2D.is_colliding() and $RayCast2D.get_collider().is_in_group("player"))
-	var rt = state.intersect_ray(position, pos,self.get_children()+[player]+get_tree().get_nodes_in_group("bullet")+get_tree().get_nodes_in_group("enemy"))
+	var rt = state.intersect_ray(position, pos,self.get_children()+[player]+get_tree().get_nodes_in_group("bullet")+get_tree().get_nodes_in_group("enemy")+get_tree().get_nodes_in_group("noblock"))
 	return rt.empty()
 
 func phys_move(pos):

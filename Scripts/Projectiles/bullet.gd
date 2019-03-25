@@ -25,7 +25,7 @@ func _physics_process(delta):
 #	pass
 	mvector = speed*delta*Vector2(cos(rotation),sin(rotation))
 	collis = move_and_collide(mvector)
-	$Tracer.points = PoolVector2Array([Vector2(0,0),mvector.length()*0*Vector2(-1,0)])
+	$Tracer.points = PoolVector2Array([Vector2(0,0),mvector.length()*2*Vector2(-1,0)])
 	if collis != null:
 		var relangle = abs(Vector2(cos(rotation),sin(rotation)).angle_to(-collis.normal))
 		#print("rot: " + str(Vector2(cos(rotation),sin(rotation))))
