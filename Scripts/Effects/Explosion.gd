@@ -6,9 +6,11 @@ extends Node2D
 var blastpower = 1000000
 var blastdist = 150
 var dmgmod = 0.05
+var phys = true
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	expleffects()
+	if phys:
+		expleffects()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
